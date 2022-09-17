@@ -10,4 +10,21 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="obj\Debug\net6.0\apphost" />
+      <Content Include="obj\Debug\net6.0\Orchestrator.csproj.CopyComplete" />
+      <Content Include="obj\Debug\net6.0\Orchestrator.csproj.CoreCompileInputs.cache" />
+      <Content Include="obj\Debug\net6.0\Orchestrator.csproj.FileListAbsolute.txt" />
+      <Content Include="obj\Debug\net6.0\Orchestrator.dll" />
+      <Content Include="obj\Debug\net6.0\Orchestrator.genruntimeconfig.cache" />
+      <Content Include="obj\Debug\net6.0\Orchestrator.MvcApplicationPartsAssemblyInfo.cache" />
+      <Content Include="obj\Debug\net6.0\Orchestrator.pdb" />
+      <Content Include="obj\Debug\net6.0\staticwebassets.build.json" />
+      <Content Include="obj\staticwebassets.pack.sentinel" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="obj\Debug\net6.0\Orchestrator.MvcApplicationPartsAssemblyInfo.cs" />
+    </ItemGroup>
+
 </Project>
