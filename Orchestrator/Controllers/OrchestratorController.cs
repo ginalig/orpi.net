@@ -12,17 +12,16 @@ namespace Orchestrator.Controllers;
 public class OrchestratorController : Controller
 {
     private static HttpClient http = new HttpClient();
-    private static List<Environment> db = new List<Environment>();
     private static ulong id = 0;
     
-    //static DbManager db = new DbManager();
+    static DbManager db = new DbManager();
     
     
     [HttpPost]
     [Route("post-form")]
     public async Task<IActionResult> ProcessUserForm([FromBody] EnvCreateRequest form)
     {
-        db.Add(new Environment
+        db.Insert(new Environment
         {
             ID = id++,
             IP = form.IP,
