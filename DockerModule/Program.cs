@@ -8,28 +8,6 @@ DockerClient client = new DockerClientConfiguration(
         new Uri("http://188.93.210.233:2375/"))
     .CreateClient();
 
-IList<ContainerListResponse> containers = await client.Containers.ListContainersAsync(
-    new ContainersListParameters{
-        Limit = 10,
-    });
-string result = "";
-
-foreach (var container in containers)
-{
-    result += container.ID;
-}
-
-client.Networks.ConnectNetworkAsync("test-net3", new NetworkConnectParameters()
-{
-    Container = "test",
-    EndpointConfig = new EndpointSettings
-    {
-        IPAMConfig = new EndpointIPAMConfig()
-        {
-            IPv4Address = "172.20.0.2"
-        }
-    }
-});
 app.MapGet("/create_network", async () =>
 {
     var response = await client.Networks.CreateNetworkAsync(new NetworksCreateParameters

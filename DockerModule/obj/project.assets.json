@@ -165,19 +165,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/ginalig/.nuget/packages/": {}
+    "/Users/ancored/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/ginalig/RiderProjects/orpi/DockerModule/DockerModule.csproj",
+      "projectUniqueName": "/Users/ancored/RiderProjects/orpi.net/DockerModule/DockerModule.csproj",
       "projectName": "DockerModule",
-      "projectPath": "/Users/ginalig/RiderProjects/orpi/DockerModule/DockerModule.csproj",
-      "packagesPath": "/Users/ginalig/.nuget/packages/",
-      "outputPath": "/Users/ginalig/RiderProjects/orpi/DockerModule/obj/",
+      "projectPath": "/Users/ancored/RiderProjects/orpi.net/DockerModule/DockerModule.csproj",
+      "packagesPath": "/Users/ancored/.nuget/packages/",
+      "outputPath": "/Users/ancored/RiderProjects/orpi.net/DockerModule/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/ginalig/.nuget/NuGet/NuGet.Config"
+        "/Users/ancored/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -224,7 +224,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.200/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.302/RuntimeIdentifierGraph.json"
       }
     }
   }

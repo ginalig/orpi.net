@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("DockerModule")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("PostgresModule")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
-[assembly: System.Reflection.AssemblyProductAttribute("DockerModule")]
-[assembly: System.Reflection.AssemblyTitleAttribute("DockerModule")]
+[assembly: System.Reflection.AssemblyProductAttribute("PostgresModule")]
+[assembly: System.Reflection.AssemblyTitleAttribute("PostgresModule")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Создано классом WriteCodeFragment MSBuild.
