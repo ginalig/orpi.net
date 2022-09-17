@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/nktrtmv/Desktop/orpi.net/PostgresModule/PostgresModule.csproj": {}
+    "/Users/ginalig/RiderProjects/orpi/PostgresModule/PostgresModule.csproj": {}
   },
   "projects": {
-    "/Users/nktrtmv/Desktop/orpi.net/PostgresModule/PostgresModule.csproj": {
+    "/Users/ginalig/RiderProjects/orpi/PostgresModule/PostgresModule.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/nktrtmv/Desktop/orpi.net/PostgresModule/PostgresModule.csproj",
+        "projectUniqueName": "/Users/ginalig/RiderProjects/orpi/PostgresModule/PostgresModule.csproj",
         "projectName": "PostgresModule",
-        "projectPath": "/Users/nktrtmv/Desktop/orpi.net/PostgresModule/PostgresModule.csproj",
-        "packagesPath": "/Users/nktrtmv/.nuget/packages/",
-        "outputPath": "/Users/nktrtmv/Desktop/orpi.net/PostgresModule/obj/",
+        "projectPath": "/Users/ginalig/RiderProjects/orpi/PostgresModule/PostgresModule.csproj",
+        "packagesPath": "/Users/ginalig/.nuget/packages/",
+        "outputPath": "/Users/ginalig/RiderProjects/orpi/PostgresModule/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/nktrtmv/.nuget/NuGet/NuGet.Config"
+          "/Users/ginalig/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"

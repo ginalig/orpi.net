@@ -1,15 +1,22 @@
 using Docker.DotNet;
 using Docker.DotNet.Models;
+using Microsoft.AspNetCore.Mvc;
+using opti.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-DockerClient client = new DockerClientConfiguration(
-        new Uri("http://188.93.210.233:2375/"))
-    .CreateClient();
+// Test Docker client Uri = "http://188.93.210.233:2375/"
 
-app.MapGet("/create_network", async () =>
+app.MapPost("/install_docker", () =>
 {
+    Results.Ok();
+});
+
+app.MapGet("/create_network", async ([FromBody]NetworkQuery query) =>
+{
+    var dockerClientUri = query.DockerClientUri;
+    DockerClient client = new DockerClientConfiguration(new Uri(dockerClientUri)).CreateClient();
     var response = await client.Networks.CreateNetworkAsync(new NetworksCreateParameters
     {
         Attachable = false,
@@ -20,37 +27,59 @@ app.MapGet("/create_network", async () =>
         },
         Options = new Dictionary<string, string>(),
         ConfigOnly = false,
-        Driver = "bridge",
-        Scope = "local",
+        Driver = query.Driver, //
+        Scope = query.Scope, //
         EnableIPv6 = false,
         Ingress = false,
         Internal = false,
         IPAM = new IPAM()
         {
-            Config = new List<IPAMConfig>() {new IPAMConfig() {Subnet = "172.20.0.0/16", Gateway = "172.20.0.1"}},
+            Config = new List<IPAMConfig>(),
             Driver = "default",
             Options = new Dictionary<string, string>()
         },
         Labels = new Dictionary<string, string>(),
-        Name = "test-net3",
+        Name = query.Name, // 
 
     });
     return response.ID;
 });
 
-app.MapGet("/connect", async () =>
+app.MapGet("/connect", async ([FromBody]ConnectQuery query) =>
 {
-    await client.Networks.ConnectNetworkAsync("test-net3", new NetworkConnectParameters()
+    var dockerClientUri = query.DockerClientUri;
+    DockerClient client = new DockerClientConfiguration(new Uri(dockerClientUri)).CreateClient();
+    await client.Networks.ConnectNetworkAsync(query.NetworkName, new NetworkConnectParameters()
     {
-        Container = "test",
+        Container = query.ContainerName,
         EndpointConfig = new EndpointSettings
         {
-            IPAMConfig = new EndpointIPAMConfig()
-            {
-                IPv4Address = "172.20.0.2"
-            }
         }
     });
-    return 200;
+    return Results.Ok();
 });
+
+app.MapGet("/start", async ([FromBody]ContainerQuery query) =>
+{
+    var dockerClientUri = query.DockerClientUri;
+    var containerId = query.ContainerId;
+    DockerClient client = new DockerClientConfiguration(new Uri(dockerClientUri)).CreateClient();
+    var response = await client.Containers.InspectContainerAsync(containerId);
+    bool isRunning = response.State.Running;
+    if (isRunning)
+    {
+        return Results.BadRequest();
+    }
+    await client.Containers.StartContainerAsync(containerId, new ContainerStartParameters());
+    return Results.Ok();
+});
+
+app.MapGet("/stop", async ([FromBody]ContainerQuery query) =>
+{
+    var dockerClientUri = query.DockerClientUri;
+    var containerId = query.ContainerId;
+    DockerClient client = new DockerClientConfiguration(new Uri(dockerClientUri)).CreateClient();
+    await client.Containers.StopContainerAsync(containerId, new ContainerStopParameters());
+});
+
 app.Run();

@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "eIRxF7gCE/884BZXedBzs93a8+WjzkRfHlKXf0ObKxk=",
-  "Source": "opti",
-  "BasePath": "_content/opti",
+  "Hash": "UxZnHz0bAzPqRm5tWDZOhhZY8ILab1QyJwTFN5/dF9w=",
+  "Source": "DockerModule",
+  "BasePath": "_content/DockerModule",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
