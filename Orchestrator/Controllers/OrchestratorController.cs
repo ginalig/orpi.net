@@ -29,11 +29,13 @@ public class OrchestratorController : Controller
             IP = form.IP,
             Services = form.Services
         });
+
+        var dockerClientUri = "http://188.93.210.233:2375";
         
         var netRes = await http.PostAsync(ResolveModule(ServiceType.Docker) + "/create_network", 
             new StringContent(JsonSerializer.Serialize(new NetworkQuery
             {
-                DockerClientUri = "http://188.93.210.233:2375",
+                DockerClientUri = dockerClientUri,
                 Scope = "local",
                 Name = form.Name + "-net",
                 Driver = "bridge"
@@ -47,6 +49,27 @@ public class OrchestratorController : Controller
         foreach (var formService in form.Services)
         {
             var res = await http.PostAsync(ResolveModule(formService.Type) + "/configure", new StringContent(formService.Data));
+            if (res?.StatusCode != HttpStatusCode.OK)
+            {
+                return StatusCode(500);
+            }
+            res = await http.PostAsync(ResolveModule(ServiceType.Docker) + "/start", 
+                new StringContent(JsonSerializer.Serialize(new ContainerQuery
+                {
+                    DockerClientUri = dockerClientUri,
+                    ContainerId = formService.Name
+                })));
+            if (res?.StatusCode != HttpStatusCode.OK)
+            {
+                return StatusCode(500);
+            }
+            res = await http.PostAsync(ResolveModule(ServiceType.Docker) + "/connect", 
+                new StringContent(JsonSerializer.Serialize(new
+                {
+                    DockerClientUri = dockerClientUri,
+                    ContainerName = formService.Name,
+                    NetworkName = form.Name
+                })));
             if (res?.StatusCode != HttpStatusCode.OK)
             {
                 return StatusCode(500);
