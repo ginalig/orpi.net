@@ -8,7 +8,7 @@ var app = builder.Build();
 
 // Test Docker client Uri = "http://188.93.210.233:2375/"
 
-app.MapPost("/install_docker", () =>
+app.MapPost("/configure", () =>
 {
     Results.Ok();
 });
@@ -109,4 +109,10 @@ app.MapPost("/build_from_file", async ([FromBody]BuildImageRequest query) =>
     await orpi.Utils.Container.TryBuildImageFromDockerFile(query);
     return Results.Ok();
 });
+
+app.MapPost("/create_container", async ([FromBody] CreateContainerQuery query) =>
+{
+    return await orpi.Utils.Container.CreateContainer(query);
+});
+
 app.Run();
