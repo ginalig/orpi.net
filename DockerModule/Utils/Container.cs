@@ -27,4 +27,51 @@ public class Container
         DockerClient client = new DockerClientConfiguration(new Uri(dockerClientUri)).CreateClient();
         await client.Containers.StopContainerAsync(containerId, new ContainerStopParameters());
     }
+
+    public static async Task TryBuildImageFromDockerFile(Models.BuildImageRequest query)
+    {
+        var dockerClientUri = query.DockerClientUri;
+        DockerClient client = new DockerClientConfiguration(new Uri(dockerClientUri)).CreateClient();
+        await client.Images.BuildImageFromDockerfileAsync(
+            new ImageBuildParameters
+            {
+                Tags = new List<string>(){query.Name},
+                SuppressOutput = null,
+                RemoteContext = null,
+                NoCache = null,
+                Remove = false,
+                ForceRemove = null,
+                PullParent = null,
+                Pull = null,
+                Isolation = null,
+                CPUSetCPUs = null,
+                CPUSetMems = null,
+                CPUShares = null,
+                CPUQuota = null,
+                CPUPeriod = null,
+                Memory = null,
+                MemorySwap = null,
+                CgroupParent = null,
+                NetworkMode = null,
+                ShmSize = null,
+                Dockerfile = "./test-app/Dockerfile",
+                Ulimits = null,
+                BuildArgs = null,
+                Labels = null,
+                Squash = null,
+                CacheFrom = null,
+                SecurityOpt = null,
+                ExtraHosts = null,
+                Target = null,
+                SessionID = null,
+                Platform = null,
+                Outputs = null,
+                AuthConfigs = null
+            },
+            new FileStream(query.Filename, FileMode.Open),
+            new List<AuthConfig>() {},
+            new Dictionary<string, string>() {},
+            new Progress<JSONMessage>() {},
+            new CancellationToken());
+    }
 }

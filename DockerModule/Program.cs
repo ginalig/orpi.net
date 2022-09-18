@@ -74,7 +74,7 @@ app.MapGet("/stop", async ([FromBody]ContainerQuery query) =>
     await orpi.Utils.Container.ContainerStop(query));
 
 
-app.MapPost("/resolve", async ([FromBody]ResolveQuery query) =>
+app.MapPost("/request", async ([FromBody]RequestQuery query) =>
 {
     var args = query.CommandData.Split(';');
     switch (args[0])
@@ -102,5 +102,11 @@ app.MapPost("/resolve", async ([FromBody]ResolveQuery query) =>
     }
 
     return Results.BadRequest();
+});
+
+app.MapPost("/build_from_file", async ([FromBody]BuildImageRequest query) =>
+{
+    await orpi.Utils.Container.TryBuildImageFromDockerFile(query);
+    return Results.Ok();
 });
 app.Run();

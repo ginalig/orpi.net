@@ -1,4 +1,6 @@
 using System.Net;
+using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Orchestrator.Models;
@@ -30,7 +32,7 @@ public class OrchestratorController : Controller
 
         foreach (var formService in form.Services)
         {
-            var res = await http.PostAsync(ResolveModule(formService) + "/configure", new StringContent(""));
+            var res = await http.PostAsync(ResolveModule(formService.Type) + "/configure", new StringContent(""));
             if (res?.StatusCode != HttpStatusCode.OK)
             {
                 return StatusCode(500);
@@ -40,9 +42,9 @@ public class OrchestratorController : Controller
         return Ok();
     }
 
-    private string ResolveModule(Service service)
+    private string ResolveModule(ServiceType type)
     {
-        switch (service.Type)
+        switch (type)
         {
             case ServiceType.Docker:
                 return "http://localhost:3000";
@@ -62,6 +64,16 @@ public class OrchestratorController : Controller
     [Route("request-service")]
     public async Task<IActionResult> RequestService([FromBody] ServiceRequest request)
     {
+        var res = await http.PostAsync(ResolveModule(request.Type) + "/request", 
+            new StringContent(
+                JsonSerializer.Serialize(request),
+                Encoding.UTF8,
+                "application/json"
+                ));
+        if (res?.StatusCode != HttpStatusCode.OK)
+        {
+            return StatusCode(500);
+        }
         return Ok();
     }
 }

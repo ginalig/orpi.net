@@ -1,6 +1,6 @@
 namespace orpi.Models;
 
-public class ResolveQuery
+public class RequestQuery
 {
     public string DockerClientUri { get; set; }
     public string CommandData { get; set; }
