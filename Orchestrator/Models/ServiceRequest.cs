@@ -2,7 +2,7 @@ namespace Orchestrator.Models;
 
 public class ServiceRequest
 {
-    public string Ip { get; set; }
-    public string Data { get; set; }
+    public string DockerClientUri { get; set; }
+    public string CommandData { get; set; }
     public ServiceType Type { get; set; }
 }

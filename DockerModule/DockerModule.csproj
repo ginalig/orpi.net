@@ -11,4 +11,14 @@
       <PackageReference Include="Docker.DotNet" Version="3.125.11" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="obj\Debug\net6.0\DockerModule.csproj.CopyComplete" />
+      <Content Include="obj\Debug\net6.0\DockerModule.csproj.CoreCompileInputs.cache" />
+      <Content Include="obj\Debug\net6.0\DockerModule.csproj.FileListAbsolute.txt" />
+      <Content Include="obj\Debug\net6.0\DockerModule.dll" />
+      <Content Include="obj\Debug\net6.0\DockerModule.genruntimeconfig.cache" />
+      <Content Include="obj\Debug\net6.0\DockerModule.MvcApplicationPartsAssemblyInfo.cache" />
+      <Content Include="obj\Debug\net6.0\DockerModule.pdb" />
+    </ItemGroup>
+
 </Project>

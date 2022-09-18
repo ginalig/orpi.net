@@ -7,4 +7,5 @@ public class Service
     public string IP { get; set; }
     public ServiceType Type { get; set; }
     public string Ports { get; set; }
+    public string Data { get; set; }
 }

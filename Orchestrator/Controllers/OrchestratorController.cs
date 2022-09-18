@@ -29,16 +29,30 @@ public class OrchestratorController : Controller
             IP = form.IP,
             Services = form.Services
         });
+        
+        var netRes = await http.PostAsync(ResolveModule(ServiceType.Docker) + "/create_network", 
+            new StringContent(JsonSerializer.Serialize(new NetworkQuery
+            {
+                DockerClientUri = "http://188.93.210.233:2375",
+                Scope = "local",
+                Name = form.Name + "-net",
+                Driver = "bridge"
+            })));
+        
+        if (netRes?.StatusCode != HttpStatusCode.OK)
+        {
+            return StatusCode(500);
+        }
 
         foreach (var formService in form.Services)
         {
-            var res = await http.PostAsync(ResolveModule(formService.Type) + "/configure", new StringContent(""));
+            var res = await http.PostAsync(ResolveModule(formService.Type) + "/configure", new StringContent(formService.Data));
             if (res?.StatusCode != HttpStatusCode.OK)
             {
                 return StatusCode(500);
             }
         }
-        
+
         return Ok();
     }
 
@@ -47,7 +61,7 @@ public class OrchestratorController : Controller
         switch (type)
         {
             case ServiceType.Docker:
-                return "http://localhost:3000";
+                return "http://localhost:3011";
                 break;
             case ServiceType.Postgres:
                 return "http://localhost:3001";
