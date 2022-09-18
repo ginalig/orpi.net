@@ -1,4 +1,4 @@
-namespace opti.Models;
+namespace orpi.Models;
 
 public class ConnectQuery
 {

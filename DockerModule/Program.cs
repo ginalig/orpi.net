@@ -1,7 +1,7 @@
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using Microsoft.AspNetCore.Mvc;
-using opti.Models;
+using orpi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -61,25 +61,46 @@ app.MapGet("/connect", async ([FromBody]ConnectQuery query) =>
 
 app.MapGet("/start", async ([FromBody]ContainerQuery query) =>
 {
-    var dockerClientUri = query.DockerClientUri;
-    var containerId = query.ContainerId;
-    DockerClient client = new DockerClientConfiguration(new Uri(dockerClientUri)).CreateClient();
-    var response = await client.Containers.InspectContainerAsync(containerId);
-    bool isRunning = response.State.Running;
-    if (isRunning)
+    var isSuccess = await orpi.Utils.Container.TryContainerStart(query);
+    if (!isSuccess)
     {
         return Results.BadRequest();
     }
-    await client.Containers.StartContainerAsync(containerId, new ContainerStartParameters());
+
     return Results.Ok();
 });
 
 app.MapGet("/stop", async ([FromBody]ContainerQuery query) =>
-{
-    var dockerClientUri = query.DockerClientUri;
-    var containerId = query.ContainerId;
-    DockerClient client = new DockerClientConfiguration(new Uri(dockerClientUri)).CreateClient();
-    await client.Containers.StopContainerAsync(containerId, new ContainerStopParameters());
-});
+    await orpi.Utils.Container.ContainerStop(query));
 
+
+app.MapPost("/resolve", async ([FromBody]ResolveQuery query) =>
+{
+    var args = query.CommandData.Split(';');
+    switch (args[0])
+    {
+        case "start":
+            var isSuccess = await orpi.Utils.Container.TryContainerStart(new ContainerQuery
+            {
+                ContainerId = args[1],
+                DockerClientUri = query.DockerClientUri
+            });
+            if (!isSuccess)
+            {
+                return Results.BadRequest();
+            }
+
+            return Results.Ok();
+
+        case "stop" :
+            await orpi.Utils.Container.ContainerStop(new ContainerQuery
+            {
+                ContainerId = args[1],
+                DockerClientUri = query.DockerClientUri
+            });
+            return Results.Ok();
+    }
+
+    return Results.BadRequest();
+});
 app.Run();
