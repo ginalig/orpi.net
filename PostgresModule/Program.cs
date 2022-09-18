@@ -1,5 +1,7 @@
 using Docker.DotNet;
 using Docker.DotNet.Models;
+using Microsoft.AspNetCore.Mvc;
+using PostgresModule.Models;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -8,12 +10,12 @@ WebApplication app = builder.Build();
 DockerClient client;
 
 
-app.MapGet("/create-postgres-container/{ip}", async (string ip) =>
+app.MapPost("/configure", async ([FromBody]ConfigureQuery query) =>
 {
     try
     {
-        client = new DockerClientConfiguration(new Uri("http://" + ip + ":2375/")).CreateClient();
-
+        client = new DockerClientConfiguration(new Uri(query.DockerClientUri)).CreateClient();
+        
         if (!await ImagesContains("postgres:latest"))
         {
             await client.Images.CreateImageAsync(
@@ -22,21 +24,16 @@ app.MapGet("/create-postgres-container/{ip}", async (string ip) =>
                     FromImage = "postgres",
                     Tag = "latest"
                 },
-                new AuthConfig
-                {
-                    Email = "test@example.com",
-                    Username = "test",
-                    Password = "password"
-                },
+                new AuthConfig(),
                 new Progress<JSONMessage>());
         }
 
         await client.Containers.CreateContainerAsync(new CreateContainerParameters
         {
             Image = "postgres",
-            HostConfig = new HostConfig
+            HostConfig = new HostConfig()
             {
-                DNS = new[] {"127.0.0.1"}
+                PortBindings = query.PortBindings
             }
         });
     }
@@ -45,7 +42,7 @@ app.MapGet("/create-postgres-container/{ip}", async (string ip) =>
         return Results.StatusCode(500);
     }
 
-    return Results.Ok("Container built with ip: " + ip);
+    return Results.Ok();
 });
 
 async Task<bool> ImagesContains(string repoTag)
