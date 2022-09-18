@@ -30,7 +30,7 @@ public class OrchestratorController : Controller
 
         foreach (var formService in form.Services)
         {
-            var res = await ResolveModule(formService);
+            var res = await http.PostAsync(ResolveModule(formService) + "/configure", new StringContent(""));
             if (res?.StatusCode != HttpStatusCode.OK)
             {
                 return StatusCode(500);
@@ -40,23 +40,28 @@ public class OrchestratorController : Controller
         return Ok();
     }
 
-    private async Task<HttpResponseMessage?> ResolveModule(Service service)
+    private string ResolveModule(Service service)
     {
         switch (service.Type)
         {
             case ServiceType.Docker:
-                return await http.PostAsync("http://localhost:3000/install_docker", new StringContent(""));
+                return "http://localhost:3000";
                 break;
             case ServiceType.Postgres:
-                return await http.PostAsync("http://localhost:3001/configure", new StringContent(""));
+                return "http://localhost:3001";
                 break;
             case ServiceType.Nginx:
-                return await http.PostAsync("http://localhost:3002/configure", new StringContent(""));
+                return "http://localhost:3002";
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
-    
-    
+
+    [HttpPost]
+    [Route("request-service")]
+    public async Task<IActionResult> RequestService([FromBody] ServiceRequest request)
+    {
+        return Ok();
+    }
 }
