@@ -31,6 +31,9 @@ app.MapPost("/configure", async ([FromBody]ConfigureQuery query) =>
         await client.Containers.CreateContainerAsync(new CreateContainerParameters
         {
             Image = "postgres",
+            Tty = true,
+            Name = "testDb",
+            Env = new List<string>{"POSTGRES_PASSWORD=test"},
             HostConfig = new HostConfig()
             {
                 PortBindings = query.PortBindings

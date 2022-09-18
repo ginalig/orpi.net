@@ -20,7 +20,7 @@ app.MapGet("/create_network", async ([FromBody]NetworkQuery query) =>
     var response = await client.Networks.CreateNetworkAsync(new NetworksCreateParameters
     {
         Attachable = false,
-        CheckDuplicate = false,
+        CheckDuplicate = true,
         ConfigFrom = new ConfigReference
         {
             Network = ""
